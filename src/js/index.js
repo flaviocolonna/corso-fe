@@ -4,6 +4,9 @@ const OperationsType = {
     EXPENSE: 'EXPENSE',
     INCOME: 'INCOME'
 }
+const WalletErrors = {
+    OPERATION_NOT_FOUND: 'OPERATION_NOT_FOUND'
+}
 /**
  * {
  *   type: 'EXPENSE',
@@ -22,9 +25,31 @@ function addOperation(operation) {
     }
     operations.push(operationToAdd);
 }
-function removeOperation() {
-
+/**
+ * Remove an operation from the wallet. It receives the id of the operation
+ * and then removes it from the operations list.
+ * @param {number} id
+ */
+function removeOperation(id) {
+    let idToRemove = -1;
+    for(var i = 0; i < operations.length; i++) {
+        if(operations[i].id === id) {
+            idToRemove = i;
+            break;
+        }
+    }
+    if(idToRemove === -1) {
+        throw new Error(WalletErrors.OPERATION_NOT_FOUND);
+    }
+    const operation = operations[idToRemove];
+    if(operation.type === OperationsType.IN) {
+        balance =  balance - operation.amount;
+    } else if(operation.type === OperationsType.OUT) {
+        balance = balance + operation.amount;
+    }
+    operations.splice(idToRemove, 1);
 }
+
 // Find operation
 // Get balance
 // Get operations
