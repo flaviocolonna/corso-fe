@@ -65,5 +65,15 @@ function findOperation(searchValue) {
     return operationsFound;
 }
 
-// Get balance
-// Get operations
+/**
+ * @return {number} Balance of the wallet
+ */
+function getBalance() {
+    return balance;
+}
+/**
+ * @return {Array<Object>} Returns the operations list of the wallet
+ */
+function getOperations() {
+    return operations;
+}
