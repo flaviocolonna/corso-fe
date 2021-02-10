@@ -55,7 +55,7 @@ function removeOperation(operationId) {
 * @param {string} searchValue
 * @return {Array<Object>}
 */
-function findOperation(searchValue) {
+function findOperations(searchValue) {
     const val = searchValue.toLowerCase().trim();
     const operationsFound = [];
     for (let i = 0; i < operations.length; i++) {
