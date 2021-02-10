@@ -18,22 +18,22 @@ const WalletErrors = {
 function addOperation(operation) {
     const operationToAdd = operation;
     operationToAdd.id = new Date().getTime();
-    if(operationToAdd.type === OperationsType.EXPENSE) {
-        balance = balance - operationToAdd.amount;
-    } else if(operationToAdd.type === OperationsType.INCOME) {
-        balance = balance + operationToAdd.amount;
+    if (operationToAdd.type === OperationsType.EXPENSE) {
+        balance -= operationToAdd.amount;
+    } else if (operationToAdd.type === OperationsType.INCOME) {
+        balance += operationToAdd.amount;
     }
     operations.push(operationToAdd);
 }
 /**
  * Remove an operation from the wallet. It receives the id of the operation
  * and then removes it from the operations list.
- * @param {number} id
+ * @param {number} operationId
  */
-function removeOperation(id) {
+function removeOperation(operationId) {
     let idToRemove = -1;
-    for(var i = 0; i < operations.length; i++) {
-        if(operations[i].id === id) {
+    for (let i = 0; i < operations.length; i++) {
+        if (operations[i].id === operationId) {
             idToRemove = i;
             break;
         }
@@ -42,10 +42,10 @@ function removeOperation(id) {
         throw new Error(WalletErrors.OPERATION_NOT_FOUND);
     }
     const operation = operations[idToRemove];
-    if(operation.type === OperationsType.IN) {
-        balance =  balance - operation.amount;
-    } else if(operation.type === OperationsType.OUT) {
-        balance = balance + operation.amount;
+    if(operation.type === OperationsType.INCOME) {
+        balance -= operation.amount;
+    } else if(operation.type === OperationsType.EXPENSE) {
+        balance += operation.amount;
     }
     operations.splice(idToRemove, 1);
 }
@@ -56,9 +56,9 @@ function removeOperation(id) {
 function findOperation(searchValue) {
     const val = searchValue.toLowerCase().trim();
     const operationsFound = [];
-    for(var i = 0; i < operations.length; i++) {
+    for (var i = 0; i < operations.length; i++) {
         const description = operations[i].description.toLowerCase();
-        if(description.indexOf(val) > -1) {
+        if (description.indexOf(val) > -1) {
             operationsFound.push(operations[i]);
         }
     }
