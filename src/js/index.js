@@ -50,13 +50,15 @@ function removeOperation(operationId) {
     operations.splice(idToRemove, 1);
 }
 
-/*
-* Find a list of operations which descriptions match at least partially the search value. 
+/**
+* Find a list of operations which descriptions match at least partially the search value.
+* @param {string} searchValue
+* @return {Array<Object>}
 */
 function findOperation(searchValue) {
     const val = searchValue.toLowerCase().trim();
     const operationsFound = [];
-    for (var i = 0; i < operations.length; i++) {
+    for (let i = 0; i < operations.length; i++) {
         const description = operations[i].description.toLowerCase();
         if (description.indexOf(val) > -1) {
             operationsFound.push(operations[i]);
