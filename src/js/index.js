@@ -3,7 +3,9 @@
     let balance = 0;
     const operations = [];
     const WalletErrors = {
-        OPERATION_NOT_FOUND: 'OPERATION_NOT_FOUND'
+        OPERATION_NOT_FOUND: 'OPERATION_NOT_FOUND',
+        INVALID_OPERATION: 'INVALID_OPERATION',
+        INVALID_SEARCH_VALUE: 'INVALID_SEARCH_VALUE'
     }
     /**
      * {
@@ -19,8 +21,8 @@
         // 2. Personalizzare l'errore
         // 3. Aggiungere validazione in altre funzioni che reputi opportune
         // 4. Esporta correttamente le funzioni nel contesto padre
-        if(!OperationsType[operation.type] && operation.amount <= 0 && !operation.description) {
-            throw new Error("aggiungi il tuo errore");
+        if(!operation || !OperationsType[operation.type] || operation.amount <= 0 || !operation.description) {
+            throw new Error(WalletErrors.INVALID_OPERATION);
         }
         const operationToAdd = operation;
         operationToAdd.id = new Date().getTime();
@@ -36,7 +38,7 @@
      * and then removes it from the operations list.
      * @param {number} operationId
      */
-    function removeOperation(operationId) {
+    this.removeOperation = function(operationId) {
         let idToRemove = -1;
         for (let i = 0; i < operations.length; i++) {
             if (operations[i].id === operationId) {
@@ -61,7 +63,13 @@
     * @param {string} searchValue
     * @return {Array<Object>}
     */
-    function findOperations(searchValue) {
+    this.findOperations = function(searchValue) {
+        if(typeof searchValue !== 'string') {
+            throw new Error(WalletErrors.INVALID_SEARCH_VALUE);
+        }
+        if(!searchValue) {
+            return [];
+        }
         const val = searchValue.toLowerCase().trim();
         const operationsFound = [];
         for (let i = 0; i < operations.length; i++) {
@@ -76,13 +84,13 @@
     /**
      * @return {number} Balance of the wallet
      */
-    function getBalance() {
+    this.getBalance = function() {
         return balance;
     }
     /**
      * @return {Array<Object>} Returns the operations list of the wallet
      */
-    function getOperations() {
+    this.getOperations = function() {
         return operations;
     }
 
