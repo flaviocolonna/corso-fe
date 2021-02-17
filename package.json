@@ -1,0 +1,27 @@
+{
+  "name": "corso-fe",
+  "version": "0.1.0",
+  "description": "A money tracking app",
+  "main": "src/js/index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/flaviocolonna/corso-fe.git"
+  },
+  "keywords": [
+    "money",
+    "app",
+    "frontend"
+  ],
+  "author": "Flavio Colonna",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/flaviocolonna/corso-fe/issues"
+  },
+  "homepage": "https://github.com/flaviocolonna/corso-fe#readme",
+  "devDependencies": {
+    "gulp": "4.0.2"
+  }
+}
