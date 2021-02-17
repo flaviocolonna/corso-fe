@@ -1,3 +1,10 @@
+/**
+ * The operation schema
+ * @typedef {Object} Operation
+ * @property {string} type - Set if EXPENSE OR INCOME.
+ * @property {number} amount - Set the operation's amount.
+ * @property {string} description - Set the description of the operation.
+ */
 // IIFE
 (function () {
     let balance = 0;
@@ -13,7 +20,7 @@
      *   amount: 120,
      *   description: 'Bill payment'
      * }
-     * @param {*} operation 
+     * @param {Operation} operation 
      */
     this.addOperation = function(operation) {
         // 1. Estrarre questa validazione in un'altra funzione che prenda come parametro l'operazione
@@ -61,7 +68,7 @@
     /**
     * Find a list of operations which descriptions match at least partially the search value.
     * @param {string} searchValue
-    * @return {Array<Object>}
+    * @return {Array<Operation>}
     */
     this.findOperations = function(searchValue) {
         if(typeof searchValue !== 'string') {
@@ -88,7 +95,7 @@
         return balance;
     }
     /**
-     * @return {Array<Object>} Returns the operations list of the wallet
+     * @return {Array<Operation>} Returns the operations list of the wallet
      */
     this.getOperations = function() {
         return operations;
