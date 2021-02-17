@@ -22,15 +22,16 @@
      * }
      * @param {Operation} operation 
      */
-    this.addOperation = function(operation) {
+    this.addOperation = function (operation) {
         // 1. Estrarre questa validazione in un'altra funzione che prenda come parametro l'operazione
         // e restituisca true o false
         // 2. Personalizzare l'errore
         // 3. Aggiungere validazione in altre funzioni che reputi opportune
         // 4. Esporta correttamente le funzioni nel contesto padre
-        if(!operation || !OperationsType[operation.type] || operation.amount <= 0 || !operation.description) {
+        if (!operation || !OperationsType[operation.type] || operation.amount <= 0 || !operation.description) {
             throw new Error(WalletErrors.INVALID_OPERATION);
         }
+
         const operationToAdd = operation;
         operationToAdd.id = new Date().getTime();
         if (operationToAdd.type === OperationsType.EXPENSE) {
@@ -45,7 +46,7 @@
      * and then removes it from the operations list.
      * @param {number} operationId
      */
-    this.removeOperation = function(operationId) {
+    this.removeOperation = function (operationId) {
         let idToRemove = -1;
         for (let i = 0; i < operations.length; i++) {
             if (operations[i].id === operationId) {
@@ -70,11 +71,11 @@
     * @param {string} searchValue
     * @return {Array<Operation>}
     */
-    this.findOperations = function(searchValue) {
-        if(typeof searchValue !== 'string') {
+    this.findOperations = function (searchValue) {
+        if (typeof searchValue !== 'string') {
             throw new Error(WalletErrors.INVALID_SEARCH_VALUE);
         }
-        if(!searchValue) {
+        if (!searchValue) {
             return [];
         }
         const val = searchValue.toLowerCase().trim();
@@ -91,13 +92,13 @@
     /**
      * @return {number} Balance of the wallet
      */
-    this.getBalance = function() {
+    this.getBalance = function () {
         return balance;
     }
     /**
      * @return {Array<Operation>} Returns the operations list of the wallet
      */
-    this.getOperations = function() {
+    this.getOperations = function () {
         return operations;
     }
 
