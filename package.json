@@ -4,7 +4,8 @@
   "description": "A money tracking app",
   "main": "src/js/index.js",
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "dev": "gulp build"
   },
   "repository": {
     "type": "git",
@@ -22,6 +23,12 @@
   },
   "homepage": "https://github.com/flaviocolonna/corso-fe#readme",
   "devDependencies": {
-    "gulp": "4.0.2"
+    "browser-sync": "2.26.14",
+    "browserify": "17.0.0",
+    "del": "6.0.0",
+    "gulp": "4.0.2",
+    "gulp-inject": "5.0.5",
+    "vinyl-buffer": "1.0.1",
+    "vinyl-source-stream": "2.0.0"
   }
 }
