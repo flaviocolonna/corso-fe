@@ -1,3 +1,5 @@
+const Enums = require('../enums');
+
 /**
  * The operation schema
  * @typedef {Object} Operation
@@ -6,15 +8,6 @@
  * @property {string} description - Set the description of the operation.
  */
 
-const OperationsType = {
-    EXPENSE: 'EXPENSE',
-    INCOME: 'INCOME'
-}
-const WalletErrors = {
-    OPERATION_NOT_FOUND: 'OPERATION_NOT_FOUND',
-    INVALID_OPERATION: 'INVALID_OPERATION',
-    INVALID_SEARCH_VALUE: 'INVALID_SEARCH_VALUE'
-}
 function Wallet() {
     let balance = 0;
     const operations = [];
@@ -27,20 +20,14 @@ function Wallet() {
      * @param {Operation} operation 
      */
     this.addOperation = function (operation) {
-        // 1. Estrarre questa validazione in un'altra funzione che prenda come parametro l'operazione
-        // e restituisca true o false
-        // 2. Personalizzare l'errore
-        // 3. Aggiungere validazione in altre funzioni che reputi opportune
-        // 4. Esporta correttamente le funzioni nel contesto padre
-        if (!operation || !OperationsType[operation.type] || operation.amount <= 0 || !operation.description) {
-            throw new Error(WalletErrors.INVALID_OPERATION);
+        if (!operation || !Enums.OperationsType[operation.type] || operation.amount <= 0 || !operation.description) {
+            throw new Error(Enums.WalletErrors.INVALID_OPERATION);
         }
-
         const operationToAdd = operation;
         operationToAdd.id = new Date().getTime();
-        if (operationToAdd.type === OperationsType.EXPENSE) {
+        if (operationToAdd.type === Enums.OperationsType.EXPENSE) {
             balance -= operationToAdd.amount;
-        } else if (operationToAdd.type === OperationsType.INCOME) {
+        } else if (operationToAdd.type === Enums.OperationsType.INCOME) {
             balance += operationToAdd.amount;
         }
         operations.push(operationToAdd);
@@ -59,12 +46,12 @@ function Wallet() {
             }
         }
         if (idToRemove === -1) {
-            throw new Error(WalletErrors.OPERATION_NOT_FOUND);
+            throw new Error(Enums.WalletErrors.OPERATION_NOT_FOUND);
         }
         const operation = operations[idToRemove];
-        if (operation.type === OperationsType.INCOME) {
+        if (operation.type === Enums.OperationsType.INCOME) {
             balance -= operation.amount;
-        } else if (operation.type === OperationsType.EXPENSE) {
+        } else if (operation.type === Enums.OperationsType.EXPENSE) {
             balance += operation.amount;
         }
         operations.splice(idToRemove, 1);
@@ -77,7 +64,7 @@ function Wallet() {
     */
     this.findOperations = function (searchValue) {
         if (typeof searchValue !== 'string') {
-            throw new Error(WalletErrors.INVALID_SEARCH_VALUE);
+            throw new Error(Enums.WalletErrors.INVALID_SEARCH_VALUE);
         }
         if (!searchValue) {
             return [];
