@@ -4,7 +4,7 @@
   "description": "A money tracking app",
   "main": "src/js/index.js",
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1",
+    "test": "jest --coverage",
     "dev": "gulp build --dev",
     "prod": "gulp build --prod",
     "prod:debug": "gulp build --prod --debug"
@@ -33,6 +33,7 @@
     "gulp-inject": "5.0.5",
     "gulp-sourcemaps": "^3.0.0",
     "gulp-uglify": "^3.0.2",
+    "jest": "^26.6.3",
     "vinyl-buffer": "1.0.1",
     "vinyl-source-stream": "2.0.0",
     "yargs": "^16.2.0"
