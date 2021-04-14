@@ -36,17 +36,61 @@ const addOperation = (event) => {
         amount: parseFloat(amount),
         description,
         type,
+        date: new Date().getTime()
     }
     try {
         wallet.addOperation(operation);
         formElmnt.reset();
         checkFormValidity(formElmnt, true);
         toggleModal();
+        updateOperationsTable();
     } catch (e) {
         console.error(e);
         checkFormValidity(formElmnt);
     }
 }
+const getDeleteActionBtn = (operation) => {
+    const actionCell = document.createElement('td');
+    actionCell.className = 'align-text-center';
+    const actionButton = document.createElement('button');
+    actionButton.className = 'button button-icon button-animated icon-delete';
+    actionButton.onclick = function() {
+        // removeOperation(operation.id);
+    }
+    actionCell.appendChild(actionButton);
+    return actionCell;
+}
+const getOperationsRow = (operation) => {
+    const tableRow = document.createElement('tr');
+    const descriptionCell = document.createElement('td');
+    descriptionCell.textContent = operation.description;
+    const amountCell = document.createElement('td');
+    amountCell.textContent = parseFloat(operation.amount).toLocaleString();
+    const dateCell = document.createElement('td');
+    dateCell.textContent = new Date(operation.date).toLocaleString();
+    tableRow.appendChild(descriptionCell);
+    tableRow.appendChild(amountCell);
+    tableRow.appendChild(dateCell);
+    tableRow.appendChild(getDeleteActionBtn(operation));
+    return tableRow;
+}
+const updateOperationsTable = () => {
+    const operations = wallet.getOperations();
+    const tableContainerElmnt = document.getElementById('table-container');
+    const tableBody = tableContainerElmnt.querySelector('#table-body');
+    if(!operations.length) {
+        tableContainerElmnt.classList.add('no-data');
+        return;
+    }
+    tableContainerElmnt.classList.remove('no-data');
+    operations.forEach(function(operation) {
+        tableBody.appendChild(getOperationsRow(operation));
+    });
+}
 
 window.addOperation = addOperation;
 window.toggleModal = toggleModal;
+
+window.addEventListener('DOMContentLoaded', function() {
+    updateOperationsTable();
+});
