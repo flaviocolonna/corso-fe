@@ -69,6 +69,7 @@ function Wallet() {
             balance += operation.amount;
         }
         operations.splice(idToRemove, 1);
+        this.saveWallet();
     }
 
     /**
