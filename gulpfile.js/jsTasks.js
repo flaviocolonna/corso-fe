@@ -12,6 +12,7 @@ const browserifyBundle = function (entry) {
     return browserify({
         entries: entry
     })
+        .transform('babelify')
         .bundle()
         .pipe(source(paths.getJSEntryFile()))
         .pipe(buffer());
