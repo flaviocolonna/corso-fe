@@ -11,6 +11,19 @@ const Enums = require('../enums');
 function Wallet() {
     let balance = 0;
     const operations = [];
+
+    this.initWallet = function() {
+        const savedWallet = localStorage.getItem('wallet');
+        if(!savedWallet) {
+            return;
+        }
+        const { balance: savedBalance, operations: savedOperations } = JSON.parse(savedWallet);
+        balance = savedBalance;
+        operations.push(...savedOperations);
+    }
+    this.saveWallet = function() {
+        localStorage.setItem('wallet', JSON.stringify({ balance, operations }));
+    }
     /**
      * {
      *   type: 'EXPENSE',
@@ -31,6 +44,7 @@ function Wallet() {
             balance += operationToAdd.amount;
         }
         operations.push(operationToAdd);
+        this.saveWallet();
     }
     /**
      * Remove an operation from the wallet. It receives the id of the operation
@@ -92,6 +106,8 @@ function Wallet() {
     this.getOperations = function () {
         return operations;
     }
+
+    this.initWallet();
 }
 
 module.exports = Wallet;
