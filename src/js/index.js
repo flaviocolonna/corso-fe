@@ -70,9 +70,11 @@ const getDeleteActionBtn = (operation) => {
 }
 const getOperationsRow = (operation) => {
     const tableRow = document.createElement('tr');
+    tableRow.setAttribute('data-op-type', operation.type.toLowerCase());
     const descriptionCell = document.createElement('td');
     descriptionCell.textContent = operation.description;
     const amountCell = document.createElement('td');
+    amountCell.className = 'operation-amount';
     amountCell.textContent = parseFloat(operation.amount).toLocaleString();
     const dateCell = document.createElement('td');
     dateCell.textContent = new Date(operation.date).toLocaleString();
@@ -86,6 +88,7 @@ const updateOperationsTable = () => {
     const operations = wallet.getOperations();
     const tableContainerElmnt = document.getElementById('table-container');
     const tableBody = tableContainerElmnt.querySelector('#table-body');
+    updateBalance();
     if (!operations.length) {
         tableContainerElmnt.classList.add('no-data');
         return;
@@ -96,7 +99,10 @@ const updateOperationsTable = () => {
         tableBody.appendChild(getOperationsRow(operation));
     });
 }
-
+const updateBalance = () => {
+    const balanceElmnt = document.getElementById('balance-box');
+    balanceElmnt.textContent = wallet.getBalance();
+}
 window.addOperation = addOperation;
 window.toggleModal = toggleModal;
 
