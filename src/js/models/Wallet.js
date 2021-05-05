@@ -1,4 +1,4 @@
-const { default: axios } = require('axios');
+const axios = require('axios');
 const Enums = require('../enums');
 
 /**
@@ -93,4 +93,4 @@ class Wallet {
 
 }
 
-module.exports = Wallet;
+module.exports = new Wallet();

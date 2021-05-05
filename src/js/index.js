@@ -1,7 +1,6 @@
 import 'regenerator-runtime/runtime';
-const Wallet = require('./models/Wallet');
+const wallet = require('./models/Wallet');
 
-const wallet = new Wallet();
 const toggleModal = () => {
     const modalElmnt = document.getElementById('modal');
     if (!modalElmnt) {

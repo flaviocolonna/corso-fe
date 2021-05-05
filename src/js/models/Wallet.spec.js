@@ -1,4 +1,4 @@
-const Wallet = require("./Wallet");
+const wallet = require("./Wallet");
 const Enums = require("../enums");
 const mockedStructures = require("../../../jest/mocks/modelExamples");
 import axios from 'axios';
@@ -8,12 +8,10 @@ jest.mock('axios');
 
 describe("Wallet testing suite", function () {
     it("First instance should be an empty Wallet", function () {
-        const wallet = new Wallet();
         expect(wallet.getBalance()).toBe(0);
         expect(wallet.getOperations().length).toBe(0);
     });
     it("addOperation: it works with an income operation", async function () {
-        const wallet = new Wallet();
         const operation = mockedStructures.INCOME_OPERATION;
         axios.get.mockResolvedValueOnce({
             data: {
@@ -27,7 +25,6 @@ describe("Wallet testing suite", function () {
         expect(wallet.getOperations().length).toBe(1);
     });
     it("addOperation: it works with an outcome operation", async function () {
-        const wallet = new Wallet();
         const operation = mockedStructures.EXPENSE_OPERATION;
         axios.get.mockResolvedValueOnce({
             data: {
@@ -41,7 +38,6 @@ describe("Wallet testing suite", function () {
         expect(wallet.getOperations().length).toBe(1);
     });
     it("addOperation: it fires an error when adding an invalid operation", async function () {
-        const wallet = new Wallet();
         try {
             await wallet.addOperation(mockedStructures.NOT_VALID_EXPENSE_OPERATION);
         } catch(e) {
@@ -49,7 +45,6 @@ describe("Wallet testing suite", function () {
         }
     });
     it("removeOperation: it works removing an income operation", async function () {
-        const wallet = new Wallet();
         const operation = mockedStructures.INCOME_OPERATION;
         axios.get.mockResolvedValueOnce({
             data: {
@@ -72,7 +67,6 @@ describe("Wallet testing suite", function () {
         expect(wallet.getOperations().length).toBe(0);
     });
     it("removeOperation: it works removing an outcome operation", async function () {
-        const wallet = new Wallet();
         const operation = mockedStructures.EXPENSE_OPERATION;
         axios.get.mockResolvedValueOnce({
             data: {
@@ -95,7 +89,6 @@ describe("Wallet testing suite", function () {
         expect(wallet.getOperations().length).toBe(0);
     });
     it("removeOperation: it fires the correct error when date/id not found", async function () {
-        const wallet = new Wallet();
         try {
             await wallet.removeOperation(242389239);
         } catch(e) {
@@ -103,7 +96,6 @@ describe("Wallet testing suite", function () {
         }
     });
     it("findOperation: it works finding a correct operation passing a search value", async function () {
-        const wallet = new Wallet();
         const operation = mockedStructures.INCOME_OPERATION;
         axios.get.mockResolvedValueOnce({
             data: {
