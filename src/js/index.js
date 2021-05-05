@@ -12,7 +12,7 @@ const toggleModal = () => {
         return;
     }
     modalElmnt.classList.add('hide');
-}
+};
 const checkFormValidity = (form, forceReset = false) => {
     const { amount: amountInput, description: descriptionInput } = form;
     if (amountInput.checkValidity() || forceReset) {
@@ -25,18 +25,21 @@ const checkFormValidity = (form, forceReset = false) => {
     } else {
         descriptionInput.parentNode.classList.add('has-error');
     }
-}
+};
 const addOperation = async (event) => {
     event.preventDefault();
     const btnSubmit = event.target;
     const type = btnSubmit.getAttribute('data-type');
     const formElmnt = btnSubmit.closest('form');
-    const { amount: { value: amount }, description: { value: description } } = formElmnt;
+    const {
+        amount: { value: amount },
+        description: { value: description },
+    } = formElmnt;
     const operation = {
         amount: parseFloat(amount),
         description: description.trim(),
         type,
-    }
+    };
     try {
         await wallet.addOperation(operation);
         formElmnt.reset();
@@ -47,7 +50,7 @@ const addOperation = async (event) => {
         console.error(e);
         checkFormValidity(formElmnt);
     }
-}
+};
 const removeOperation = async (id) => {
     try {
         await wallet.removeOperation(id);
@@ -55,7 +58,7 @@ const removeOperation = async (id) => {
     } catch (e) {
         console.log(e);
     }
-}
+};
 const getDeleteActionBtn = (operation) => {
     const actionCell = document.createElement('td');
     actionCell.className = 'align-text-center';
@@ -63,10 +66,10 @@ const getDeleteActionBtn = (operation) => {
     actionButton.className = 'button button-icon button-animated icon-delete';
     actionButton.onclick = function () {
         removeOperation(operation.id);
-    }
+    };
     actionCell.appendChild(actionButton);
     return actionCell;
-}
+};
 const getOperationsRow = (operation) => {
     const tableRow = document.createElement('tr');
     tableRow.setAttribute('data-op-type', operation.type.toLowerCase());
@@ -82,7 +85,7 @@ const getOperationsRow = (operation) => {
     tableRow.appendChild(dateCell);
     tableRow.appendChild(getDeleteActionBtn(operation));
     return tableRow;
-}
+};
 const updateOperationsTable = (operationsToShow = wallet.getOperations()) => {
     const operations = Array.from(operationsToShow);
     const tableContainerElmnt = document.getElementById('table-container');
@@ -97,11 +100,11 @@ const updateOperationsTable = (operationsToShow = wallet.getOperations()) => {
     operations.forEach(function (operation) {
         tableBody.appendChild(getOperationsRow(operation));
     });
-}
+};
 const updateBalance = () => {
     const balanceElmnt = document.getElementById('balance-box');
     balanceElmnt.textContent = wallet.getBalance();
-}
+};
 /**
  * It shows or hides the reset button.
  * @name onSearchInputChange

@@ -7,7 +7,8 @@
     "test": "jest --coverage",
     "dev": "gulp build --dev",
     "prod": "gulp build --prod",
-    "prod:debug": "gulp build --prod --debug"
+    "prod:debug": "gulp build --prod --debug",
+    "pretty": "prettier src --write"
   },
   "repository": {
     "type": "git",
@@ -33,6 +34,7 @@
     "browserify": "17.0.0",
     "del": "6.0.0",
     "eslint": "^7.25.0",
+    "eslint-config-prettier": "^8.3.0",
     "gulp": "4.0.2",
     "gulp-concat": "^2.6.1",
     "gulp-if": "^3.0.0",

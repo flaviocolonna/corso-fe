@@ -15,11 +15,16 @@ class Wallet {
     }
 
     async updateWallet() {
-        const { data: savedWallet } = await axios.get('http://localhost:9000/api/wallet');
+        const { data: savedWallet } = await axios.get(
+            'http://localhost:9000/api/wallet'
+        );
         if (!savedWallet) {
             return;
         }
-        const { balance: savedBalance, operations: savedOperations } = savedWallet;
+        const {
+            balance: savedBalance,
+            operations: savedOperations,
+        } = savedWallet;
         this.balance = savedBalance;
         this.operations = savedOperations;
     }
@@ -29,13 +34,21 @@ class Wallet {
      *   amount: 120,
      *   description: 'Bill payment'
      * }
-     * @param {Operation} operation 
+     * @param {Operation} operation
      */
     async addOperation(operation) {
-        if (!operation || !Enums.OperationsType[operation.type] || operation.amount <= 0 || !operation.description) {
+        if (
+            !operation ||
+            !Enums.OperationsType[operation.type] ||
+            operation.amount <= 0 ||
+            !operation.description
+        ) {
             throw new Error(Enums.WalletErrors.INVALID_OPERATION);
         }
-        await axios.post('http://localhost:9000/api/wallet/operation', operation);
+        await axios.post(
+            'http://localhost:9000/api/wallet/operation',
+            operation
+        );
         await this.updateWallet();
     }
     /**
@@ -54,15 +67,17 @@ class Wallet {
         if (idToRemove === -1) {
             throw new Error(Enums.WalletErrors.OPERATION_NOT_FOUND);
         }
-        await axios.delete(`http://localhost:9000/api/wallet/operation/${operationId}`);
+        await axios.delete(
+            `http://localhost:9000/api/wallet/operation/${operationId}`
+        );
         await this.updateWallet();
     }
 
     /**
-    * Find a list of operations which descriptions match at least partially the search value.
-    * @param {string} searchValue
-    * @return {Array<Operation>}
-    */
+     * Find a list of operations which descriptions match at least partially the search value.
+     * @param {string} searchValue
+     * @return {Array<Operation>}
+     */
     findOperations(searchValue) {
         if (typeof searchValue !== 'string') {
             throw new Error(Enums.WalletErrors.INVALID_SEARCH_VALUE);
@@ -90,7 +105,6 @@ class Wallet {
     getOperations() {
         return this.operations;
     }
-
 }
 
 module.exports = new Wallet();
