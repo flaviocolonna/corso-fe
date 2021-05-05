@@ -1,3 +1,4 @@
+const { default: axios } = require('axios');
 const Enums = require('../enums');
 
 /**
@@ -7,22 +8,20 @@ const Enums = require('../enums');
  * @property {number} amount - Set the operation's amount.
  * @property {string} description - Set the description of the operation.
  */
+class Wallet {
+    constructor() {
+        this.balance = 0;
+        this.operations = [];
+    }
 
-function Wallet() {
-    let balance = 0;
-    const operations = [];
-
-    this.initWallet = function() {
-        const savedWallet = localStorage.getItem('wallet');
-        if(!savedWallet) {
+    async updateWallet() {
+        const { data: savedWallet } = await axios.get('http://localhost:9000/api/wallet');
+        if (!savedWallet) {
             return;
         }
-        const { balance: savedBalance, operations: savedOperations } = JSON.parse(savedWallet);
-        balance = savedBalance;
-        operations.push(...savedOperations);
-    }
-    this.saveWallet = function() {
-        localStorage.setItem('wallet', JSON.stringify({ balance, operations }));
+        const { balance: savedBalance, operations: savedOperations } = savedWallet;
+        this.balance = savedBalance;
+        this.operations = savedOperations;
     }
     /**
      * {
@@ -32,29 +31,22 @@ function Wallet() {
      * }
      * @param {Operation} operation 
      */
-    this.addOperation = function (operation) {
+    async addOperation(operation) {
         if (!operation || !Enums.OperationsType[operation.type] || operation.amount <= 0 || !operation.description) {
             throw new Error(Enums.WalletErrors.INVALID_OPERATION);
         }
-        const operationToAdd = operation;
-        operationToAdd.id = new Date().getTime();
-        if (operationToAdd.type === Enums.OperationsType.EXPENSE) {
-            balance -= operationToAdd.amount;
-        } else if (operationToAdd.type === Enums.OperationsType.INCOME) {
-            balance += operationToAdd.amount;
-        }
-        operations.push(operationToAdd);
-        this.saveWallet();
+        await axios.post('http://localhost:9000/api/wallet/operation', operation);
+        await this.updateWallet();
     }
     /**
      * Remove an operation from the wallet. It receives the id of the operation
      * and then removes it from the operations list.
      * @param {number} operationId
      */
-    this.removeOperation = function (operationId) {
+    async removeOperation(operationId) {
         let idToRemove = -1;
-        for (let i = 0; i < operations.length; i++) {
-            if (operations[i].id === operationId) {
+        for (let i = 0; i < this.operations.length; i++) {
+            if (this.operations[i].id === operationId) {
                 idToRemove = i;
                 break;
             }
@@ -62,14 +54,8 @@ function Wallet() {
         if (idToRemove === -1) {
             throw new Error(Enums.WalletErrors.OPERATION_NOT_FOUND);
         }
-        const operation = operations[idToRemove];
-        if (operation.type === Enums.OperationsType.INCOME) {
-            balance -= operation.amount;
-        } else if (operation.type === Enums.OperationsType.EXPENSE) {
-            balance += operation.amount;
-        }
-        operations.splice(idToRemove, 1);
-        this.saveWallet();
+        await axios.delete(`http://localhost:9000/api/wallet/operation/${operationId}`);
+        await this.updateWallet();
     }
 
     /**
@@ -77,14 +63,14 @@ function Wallet() {
     * @param {string} searchValue
     * @return {Array<Operation>}
     */
-    this.findOperations = function (searchValue) {
+    findOperations(searchValue) {
         if (typeof searchValue !== 'string') {
             throw new Error(Enums.WalletErrors.INVALID_SEARCH_VALUE);
         }
         const val = searchValue.toLowerCase().trim();
         const operationsFound = [];
-        for (let i = 0; i < operations.length; i++) {
-            const description = operations[i].description.toLowerCase();
+        for (let i = 0; i < this.operations.length; i++) {
+            const description = this.operations[i].description.toLowerCase();
             if (description.indexOf(val) > -1) {
                 operationsFound.push(operations[i]);
             }
@@ -95,17 +81,16 @@ function Wallet() {
     /**
      * @return {number} Balance of the wallet
      */
-    this.getBalance = function () {
-        return balance;
+    getBalance() {
+        return this.balance;
     }
     /**
      * @return {Array<Operation>} Returns the operations list of the wallet
      */
-    this.getOperations = function () {
-        return operations;
+    getOperations() {
+        return this.operations;
     }
 
-    this.initWallet();
 }
 
 module.exports = Wallet;

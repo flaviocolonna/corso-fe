@@ -1,3 +1,4 @@
+import 'regenerator-runtime/runtime';
 const Wallet = require('./models/Wallet');
 
 const wallet = new Wallet();
@@ -26,7 +27,7 @@ const checkFormValidity = (form, forceReset = false) => {
         descriptionInput.parentNode.classList.add('has-error');
     }
 }
-const addOperation = (event) => {
+const addOperation = async (event) => {
     event.preventDefault();
     const btnSubmit = event.target;
     const type = btnSubmit.getAttribute('data-type');
@@ -34,12 +35,11 @@ const addOperation = (event) => {
     const { amount: { value: amount }, description: { value: description } } = formElmnt;
     const operation = {
         amount: parseFloat(amount),
-        description,
+        description: description.trim(),
         type,
-        date: new Date().getTime()
     }
     try {
-        wallet.addOperation(operation);
+        await wallet.addOperation(operation);
         formElmnt.reset();
         checkFormValidity(formElmnt, true);
         toggleModal();
@@ -49,9 +49,9 @@ const addOperation = (event) => {
         checkFormValidity(formElmnt);
     }
 }
-const removeOperation = (id) => {
+const removeOperation = async (id) => {
     try {
-        wallet.removeOperation(id);
+        await wallet.removeOperation(id);
         updateOperationsTable();
     } catch (e) {
         console.log(e);
@@ -161,6 +161,7 @@ window.searchOperation = searchOperation;
 window.resetSearch = resetSearch;
 window.onSearchInputChange = onSearchInputChange;
 
-window.addEventListener('DOMContentLoaded', function () {
+window.addEventListener('DOMContentLoaded', async function () {
+    await wallet.updateWallet();
     updateOperationsTable();
 });
