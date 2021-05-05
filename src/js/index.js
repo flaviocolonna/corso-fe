@@ -84,8 +84,8 @@ const getOperationsRow = (operation) => {
     tableRow.appendChild(getDeleteActionBtn(operation));
     return tableRow;
 }
-const updateOperationsTable = () => {
-    const operations = wallet.getOperations();
+const updateOperationsTable = (operationsToShow = wallet.getOperations()) => {
+    const operations = Array.from(operationsToShow);
     const tableContainerElmnt = document.getElementById('table-container');
     const tableBody = tableContainerElmnt.querySelector('#table-body');
     updateBalance();
@@ -103,8 +103,63 @@ const updateBalance = () => {
     const balanceElmnt = document.getElementById('balance-box');
     balanceElmnt.textContent = wallet.getBalance();
 }
+/**
+ * It shows or hides the reset button.
+ * @name onSearchInputChange
+ * @function
+ * @memberof UIMethods
+ * @param {MouseEvent} event - Event received on search input value change
+ */
+const onSearchInputChange = function (event) {
+    const { value: searchValue } = event.target;
+    const resetSearchElmnt = document.getElementById('reset-search-btn');
+    if (!searchValue) {
+        resetSearchElmnt?.classList.add('hide');
+        return;
+    }
+    resetSearchElmnt?.classList.remove('hide');
+};
+/**
+ * Invoke it to restore the search and the operations table
+ * @name resetSearch
+ * @function
+ * @memberof UIMethods
+ * @void
+ * @param {MouseEvent} event - Event passed from the mouse click
+ */
+const resetSearch = function (event) {
+    event.preventDefault();
+    const { target } = event;
+    const formElement = target.closest('form');
+    if (!formElement) {
+        return;
+    }
+    target?.classList.add('hide');
+    formElement.reset();
+    updateOperationsTable();
+};
+/**
+ * Invoke it to perform a search in the wallet.
+ * It matches the search term with the description.
+ * @name searchOperation
+ * @function
+ * @memberof UIMethods
+ * @void
+ * @param {MouseEvent} event - Event passed from the mouse click
+ */
+const searchOperation = function (event) {
+    event.preventDefault();
+    const {
+        searchInput: { value },
+    } = event.target;
+    const operationsToAdd = wallet.findOperations(value);
+    updateOperationsTable(operationsToAdd);
+};
 window.addOperation = addOperation;
 window.toggleModal = toggleModal;
+window.searchOperation = searchOperation;
+window.resetSearch = resetSearch;
+window.onSearchInputChange = onSearchInputChange;
 
 window.addEventListener('DOMContentLoaded', function () {
     updateOperationsTable();

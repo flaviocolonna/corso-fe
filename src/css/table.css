@@ -15,7 +15,7 @@ table {
     table-layout: fixed;
 }
 tr[data-op-type='expense'] .operation-amount {
-    color: red;
+    color: var(--error-color);
 }
 tr[data-op-type='income'] .operation-amount {
     color: var(--success-color);

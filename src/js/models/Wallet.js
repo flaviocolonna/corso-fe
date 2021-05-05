@@ -81,9 +81,6 @@ function Wallet() {
         if (typeof searchValue !== 'string') {
             throw new Error(Enums.WalletErrors.INVALID_SEARCH_VALUE);
         }
-        if (!searchValue) {
-            return [];
-        }
         const val = searchValue.toLowerCase().trim();
         const operationsFound = [];
         for (let i = 0; i < operations.length; i++) {
