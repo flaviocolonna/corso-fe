@@ -1,4 +1,5 @@
 const gulp = require('gulp');
+const args = require('yargs').argv;
 const gulpInject = require('gulp-inject');
 const paths = require('./paths');
 
@@ -11,6 +12,15 @@ const compileIndex = function () {
         .pipe(gulp.dest(paths.getDistFolder()));
 }
 
+const watchHtml = function (cb) {
+    const prod = args.prod;
+    if (prod) {
+        return cb();
+    }
+    gulp.watch(paths.getHtmlEntry(), compileIndex);
+    cb();
+};
 module.exports = {
     compileIndex: compileIndex,
+    watchHtml: watchHtml,
 }

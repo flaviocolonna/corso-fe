@@ -14,7 +14,7 @@ const build = gulp.series(clean,
     assetsTasks.processIcons,
     assetsTasks.watchIcons,
     assetsTasks.processCSS,
-    assetsTasks.watchCSS, viewTasks.compileIndex, jsTasks.createJSBundle, jsTasks.watchJS, serve);
+    assetsTasks.watchCSS, viewTasks.compileIndex, viewTasks.watchHtml, jsTasks.createJSBundle, jsTasks.watchJS, serve);
 
 module.exports = {
     build: build,

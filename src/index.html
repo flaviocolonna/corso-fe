@@ -37,7 +37,7 @@
             <!-- Start Search container -->
             <div class="row">
                 <div class="custom-input-container">
-                    <form>
+                    <form onsubmit="searchOperation(event)">
                         <label for="search-input">Search</label>
                         <input
                             type="text"
@@ -45,6 +45,7 @@
                             name="searchInput"
                             id="search-input"
                             data-test-id="search-input"
+                            oninput="onSearchInputChange(event)"
                         />
                         <span class="custom-input-container__actions">
                             <button
@@ -52,6 +53,7 @@
                                 class="custom-input-container__actions__action button-icon icon-close hide"
                                 id="reset-search-btn"
                                 data-test-id="search-btn-reset"
+                                onclick="resetSearch(event)"
                                 data-variant="secondary"
                             ></button>
                             <button
@@ -84,6 +86,7 @@
                 <div class="modal__header row">
                     <h2>Add operation</h2>
                     <button
+                        onclick="toggleModal()"
                         class="button button-icon icon-close modal__header__action"
                     ></button>
                 </div>
@@ -123,7 +126,8 @@
                                 class="button-success"
                                 type="button"
                                 data-test-id="add-income-op-btn"
-                                data-type="IN"
+                                data-type="INCOME"
+                                onclick="addOperation(event)"
                             >
                                 Add Income
                             </button>
@@ -131,7 +135,8 @@
                                 class="button-error"
                                 type="button"
                                 data-test-id="add-expense-op-btn"
-                                data-type="OUT"
+                                data-type="EXPENSE"
+                                onclick="addOperation(event)"
                             >
                                 Add Expense
                             </button>
@@ -159,6 +164,7 @@
             <div class="container button-float-container">
                 <button
                     class="button-float button-icon icon-add"
+                    onclick="toggleModal()"
                     data-test-id="show-modal-btn"
                 ></button>
             </div>
