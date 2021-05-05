@@ -72,7 +72,7 @@ class Wallet {
         for (let i = 0; i < this.operations.length; i++) {
             const description = this.operations[i].description.toLowerCase();
             if (description.indexOf(val) > -1) {
-                operationsFound.push(operations[i]);
+                operationsFound.push(this.operations[i]);
             }
         }
         return operationsFound;
